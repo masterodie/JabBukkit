@@ -1,5 +1,15 @@
 JabBukkit - chat to XMPP plugin for craftBukkit
 
+Commands:
+/jb - not working by now
+/jbadmin - reload plugin and configuration, set status message or add new user
+/jbadmin reload - Reloads the Server
+/jbadmin setstatus Your Message Here - sets status message to "Your Message Here"
+/jbadmin adduser mcuser mcuser@jabber.org - adds player with name mcuser and jid mcuser@jabber.org to config file 
+
+Permissions:
+jabbukkit.admin - Access /jbadmin command
+
 Configuration:
 
 ---- config.yml -------------------------------------
