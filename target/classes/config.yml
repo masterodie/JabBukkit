@@ -1,0 +1,16 @@
+#Default Configuration File
+
+#XMPP Settings
+xmpp:
+    server: localhost
+    user: user
+    password: pass
+    sasl: true
+    port: 5222
+    status: 'My Minecraft Server'
+  
+#XMPP Users to recieve ingame Chat in format
+users:
+- 'user@jabber.org|MinecraftLogin'
+
+debug: true

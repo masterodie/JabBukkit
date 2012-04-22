@@ -1,0 +1,5 @@
+name: JabBukkit
+main: de.odie.JabBukkit.JabBukkit
+version: 0.3b
+description: A Simple XMPP Plugin, that sends all Chat events to a specific Jabber Account
+author: odie
