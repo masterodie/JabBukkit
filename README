@@ -22,3 +22,5 @@ users:
 debug: false
 
 ---- end config.yml ---------------------------------
+
+Using smack (http://www.igniterealtime.org/projects/smack/) for XMPP handling
