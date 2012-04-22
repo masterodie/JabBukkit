@@ -19,7 +19,7 @@ public class JabBukkitPlayerListener implements Listener {
 	}
 	
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerChatEvent(PlayerChatEvent event) {
 		String message = event.getMessage();
 		if(message.length() >= 3) {
@@ -30,7 +30,7 @@ public class JabBukkitPlayerListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
 		for(String address : users) {
 
@@ -41,7 +41,7 @@ public class JabBukkitPlayerListener implements Listener {
 	
 
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuitEvent(PlayerQuitEvent event) {
 		for(String address : users) {
 

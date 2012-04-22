@@ -2,8 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.odie</groupId>
   <artifactId>JabBukkit</artifactId>
-  <version>0.3b</version>
-  <packaging>pom</packaging>
+  <version>0.4b</version>
   
   <build>
     <finalName>${project.artifactId}</finalName>
