@@ -3,6 +3,7 @@
   <groupId>de.odie</groupId>
   <artifactId>JabBukkit</artifactId>
   <version>0.3b</version>
+  <packaging>pom</packaging>
   
   <build>
     <finalName>${project.artifactId}</finalName>
@@ -41,5 +42,14 @@
   		<version>3.2.2</version>
   	</dependency>
   </dependencies>
-  <packaging>pom</packaging>
+  
+   <scm>
+    <connection>scm:git:git@github.com:masterodie/JabBukkit.git</connection>
+    <url>scm:git:git@github.com:masterodie/JabBukkit.git</url>
+    <developerConnection>scm:git:git@github.com:JabBukkit.git</developerConnection>
+  </scm>
+   <name>JabBukkit</name>
+   <url>https://github.com/masterodie/JabBukkit</url>
+   <description>CraftBukkit Chat to XMPP
+</description>
 </project>
