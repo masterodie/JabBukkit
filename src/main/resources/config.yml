@@ -9,7 +9,7 @@ xmpp:
     port: 5222
     status: 'My Minecraft Server'
   
-#XMPP Users to recieve ingame Chat in format
+#XMPP Users to recieve ingame Chat
 users:
 - 'user@jabber.org|MinecraftLogin'
 
