@@ -33,14 +33,18 @@ public class JabBukkitCommandExecutor implements CommandExecutor {
 				return false;
 				}
 			}
-			switch(args[0]) {
-			case "pm":
-				execSendPrivateMessage(args);
-				return true;
-			case "users":
-				if(player.hasPermission("jabbukkit.userlist"))
-					execPrintUsers(sender);
-				return true;
+			if(args.length != 0) {
+				switch(args[0]) {
+				case "pm":
+					execSendPrivateMessage(args);
+					return true;
+				case "users":
+					if(player.hasPermission("jabbukkit.userlist"))
+						execPrintUsers(sender);
+					return true;
+				default:
+					return false;
+				}
 			}
 			return false;
 		}
@@ -50,21 +54,25 @@ public class JabBukkitCommandExecutor implements CommandExecutor {
 				return false;
 				}
 			}
-			switch(args[0]) {
-			case "adduser":
-				execAddUser(args);
-				return true;
-			case "reconnect":
-				execReconnect();
-				return true;
-			case "reload":
-				execReload();
-				return true;
-			case "setstatus":
-				execUpdateStatus(args);
-				return true;
+			if(args.length != 0) {
+				switch(args[0]) {
+				case "adduser":
+					execAddUser(args);
+					return true;
+				case "reconnect":
+					execReconnect();
+					return true;
+				case "reload":
+					execReload();
+					return true;
+				case "setstatus":
+					execUpdateStatus(args);
+					return true;
+				default:
+					return false;
+				}
 			}
-				
+			return false;
 		}//If this has happened the function will break and return true. if this hasn't happened the a value of false will be returned.
 		return false; 
 	}
