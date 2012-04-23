@@ -49,6 +49,7 @@ public class JabBukkitCommandExecutor implements CommandExecutor {
 					users.add(args[2] + "|" + args[1]);
 					plugin.getConfig().set("users", users);
 					plugin.saveConfig();
+					plugin.getXMPP().addUsersToRoster();
 					return true;
 				} else {
 					return false;
@@ -63,8 +64,8 @@ public class JabBukkitCommandExecutor implements CommandExecutor {
 					}
 					plugin.getConfig().set("xmpp.status", temp);
 					plugin.saveConfig();
+					plugin.getXMPP().updateStatusMessage();
 					plugin.log.info("[" + plugin.getName() + "] XMPP status message set to: " + temp);
-					plugin.log.info("[" + plugin.getName() + "] /jbadmin reload to enable message");
 					return true;
 				}
 			}

@@ -48,17 +48,8 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 			conn.login(plugin.getConfig().getString("xmpp.user"), plugin.getConfig().getString("xmpp.password"));
 			conn.getRoster();
 			Roster.setDefaultSubscriptionMode(SubscriptionMode.accept_all);
-			Presence available = new Presence(Presence.Type.available);
-			available.setStatus(plugin.getConfig().getString("xmpp.status"));
-			conn.sendPacket(available);
-			for(String users : plugin.getConfig().getStringList("users")) {
-				if ((conn != null) && (conn.isAuthenticated())) {
-					// check if the user is already on the roster
-					if (conn.getRoster().contains(users.substring(0, users.indexOf("|")))) { 
-						conn.getRoster().createEntry(users.substring(0, users.indexOf("|")), users.substring(0, users.indexOf("|")), new String[] {"default"});
-					}
-				}
-			}
+			updateStatusMessage();
+			addUsersToRoster();
 			chatmanager = conn.getChatManager();
 			chatmanager.addChatListener(this);
 			plugin.log.info("["+plugin.getPluginName()+"] XMPP Login Successful");	
@@ -74,6 +65,27 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 		if(true)
 			plugin.log.info("[" + plugin.getPluginName() + "] XMPP Disconnected");
 		conn.disconnect();
+	}
+	
+	public void updateStatusMessage() {
+		Presence available = new Presence(Presence.Type.available);
+		available.setStatus(plugin.getConfig().getString("xmpp.status"));
+		conn.sendPacket(available);
+	}
+	
+	public void addUsersToRoster() {
+		for(String users : plugin.getConfig().getStringList("users")) {
+			if ((conn != null) && (conn.isAuthenticated())) {
+				// check if the user is already on the roster
+				if (conn.getRoster().contains(users.substring(0, users.indexOf("|")))) {
+					try {
+						conn.getRoster().createEntry(users.substring(0, users.indexOf("|")), users.substring(0, users.indexOf("|")), new String[] {"default"});
+					} catch (XMPPException e) {
+						plugin.log.warning("[" + plugin.getPluginName() + "] User " + users.substring(0, users.indexOf("|")) + " could not be added to Roster!");
+					}
+				}
+			}
+		}
 	}
 
 	@Override
