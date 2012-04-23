@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
+
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
@@ -19,6 +20,8 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.util.StringUtils;
+import org.jivesoftware.smackx.XHTMLManager;
+import org.jivesoftware.smackx.XHTMLText;
 
 public class JabBukkitXMPP extends Handler implements MessageListener, ChatManagerListener {
 
@@ -113,12 +116,41 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 					nickname = address.substring(address.indexOf("|")+1);
 				} 
 			}
-			for(String address : users) {
-				if(!address.substring(0, address.toString().indexOf('|')).equals(sender)) {
-				  	sendMessage(address.substring(0, address.indexOf("|")), "[J]<" + nickname + "> " + message);
+			if(message.startsWith("\\")) {
+				List<String> ops = plugin.getConfig().getStringList("op-users");
+				if(ops.contains(sender)) {
+					plugin.log.info(message.substring(1));
+					plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), message.substring(1));
 				}
-			}
+			} else if(message.startsWith("@")) {
+				if(plugin.getServer().getPlayer(message.substring(1, message.indexOf(" "))).isOnline()) {
+					plugin.log.info("Player online");
+					for(String address : users) {
+						if(address.substring(address.toString().indexOf('|') + 1, address.toString().length()).equals(message.substring(1, message.indexOf(" ")))) {
+							plugin.getServer().getPlayer(message.substring(1, message.indexOf(" "))).sendMessage("[J]<" + nickname + "> " + message.substring(message.indexOf(" ")));
+						}
+					}
+				}
+				if(plugin.getServer().getOfflinePlayer(message.substring(1, message.indexOf(" "))).isOnline() == false) {
+					plugin.log.info("Player offline");
+					for(String address : users) {
+						String offlinemessage[] = new String[2];
+						offlinemessage[0] = message.substring(1, message.indexOf(" "));
+						offlinemessage[1] = "is offline";
+						sendMessage(address.substring(0, address.indexOf("|")), offlinemessage);
+					}
+				}
+			} else {	
+			String fullmessage[] = new String[2];
+				fullmessage[0] = nickname;
+				fullmessage[1] = message;
+				for(String address : users) {
+					if(!address.substring(0, address.indexOf('|')).equals(sender)) {
+						sendMessage(address.substring(0, address.indexOf("|")), fullmessage);
+					}
+				}
 			plugin.getServer().broadcastMessage("[J]<" + nickname + "> " + message);
+			}
 		}
 	}
 
@@ -137,7 +169,7 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 		}
 	}
 
-	public boolean sendMessage(final String address, final String message) {
+	public boolean sendMessage(final String address, final String[] message) {
 		if (address != null && !address.isEmpty()) {
 			try {
 				startChat(address);
@@ -150,8 +182,20 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 						doDisconnect();
 						doConnect();
 					}
-					String tmpmessage = message.toString().replaceAll("§[0-9a-f]", "");
-				    chat.sendMessage(tmpmessage);
+					Message msg = new Message();
+					msg.setBody(message[0] + ": " + message[1].replaceAll("§[0-9a-f]", ""));
+					XHTMLText fullmessage = new XHTMLText(null, null);
+					fullmessage.appendOpenParagraphTag(null);
+					fullmessage.appendOpenSpanTag("font-weight:bold;");
+					fullmessage.appendOpenSpanTag("text-decoration:underline;");
+					fullmessage.append(message[0]);
+					fullmessage.appendCloseSpanTag();
+					fullmessage.appendCloseSpanTag();
+					fullmessage.append(" ");
+					fullmessage.append(message[1].replaceAll("§[0-9a-f]", ""));
+					fullmessage.appendCloseParagraphTag();
+				    XHTMLManager.addBody(msg, fullmessage.toString());
+				    chat.sendMessage(msg);
 					return true;
 				}
 			}

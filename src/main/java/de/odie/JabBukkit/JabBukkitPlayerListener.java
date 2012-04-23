@@ -22,20 +22,26 @@ public class JabBukkitPlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerChatEvent(PlayerChatEvent event) {
 		String message = event.getMessage();
+		String fullmessage[] = new String[2];
+		fullmessage[0] = event.getPlayer().getDisplayName();
+		fullmessage[1] = message;
 		if(message.length() >= 3) {
 			for(String address : users) {
 					String jid = address.substring(0, address.indexOf("|"));
-					plugin.getXMPP().sendMessage(jid, "<" + event.getPlayer().getDisplayName() + "> " + message);
+					plugin.getXMPP().sendMessage(jid, fullmessage);
 			}
 		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
+		String fullmessage[] = new String[2];
+		fullmessage[0] = event.getPlayer().getDisplayName();
+		fullmessage[1] = plugin.getConfig().getString("messages.connect");
 		for(String address : users) {
 
 			String jid = address.substring(0, address.indexOf("|"));
-				plugin.getXMPP().sendMessage(jid, "<" + event.getPlayer().getDisplayName() + "> connected");
+				plugin.getXMPP().sendMessage(jid, fullmessage);
 		}
 	}
 	
@@ -43,11 +49,14 @@ public class JabBukkitPlayerListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuitEvent(PlayerQuitEvent event) {
+		String fullmessage[] = new String[2];
+		fullmessage[0] = event.getPlayer().getDisplayName();
+		fullmessage[1] = plugin.getConfig().getString("messages.disconnect");
 		for(String address : users) {
 
 			String jid = address.substring(0, address.indexOf("|"));
 			plugin.log.info(jid);
-			plugin.getXMPP().sendMessage(jid, "<" + event.getPlayer().getDisplayName() + "> disconnected");
+			plugin.getXMPP().sendMessage(jid, fullmessage);
 		}
 	}
 	

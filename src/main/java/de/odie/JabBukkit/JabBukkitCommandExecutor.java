@@ -36,7 +36,7 @@ public class JabBukkitCommandExecutor implements CommandExecutor {
 			if(args.length != 0) {
 				switch(args[0]) {
 				case "pm":
-					execSendPrivateMessage(args);
+					execSendPrivateMessage(sender, args);
 					return true;
 				case "users":
 					if(player.hasPermission("jabbukkit.userlist"))
@@ -101,7 +101,7 @@ public class JabBukkitCommandExecutor implements CommandExecutor {
 }
 	
 	public void execUpdateStatus(String[] args) {
-		if(args.length > 2) {
+		if(args.length >= 2) {
 			String temp = "";
 			for(int i = 1; i < args.length; i++)
 				temp = temp + args[i] + " ";
@@ -112,15 +112,30 @@ public class JabBukkitCommandExecutor implements CommandExecutor {
 		}
 	}
 	
-	public boolean execSendPrivateMessage(String[] args) {
+	public boolean execSendPrivateMessage(CommandSender sender, String[] args) {
 		String address = args[1];
-		String message = "";
-		for(int i = 2; i < args.length; i++) {
-			message = message + args[i] + " ";
+		String msg = "";
+		String sendername = "";
+		Player player = null;
+		if(sender instanceof Player) {
+			player = (Player)sender;
 		}
+		
+		if(player == null) 
+			sendername = "Server";
+			else
+			sendername = player.getDisplayName();  
+
+		for(int i = 2; i < args.length; i++) {
+			msg = msg + args[i] + " ";
+		}
+		String message[] = new String[2];
+		message[0] = sendername;
+		message[1] = msg;
 		for(String users : plugin.getConfig().getStringList("users")) {
 			if(address.equalsIgnoreCase(users.substring(0, users.indexOf("|")))) {
-				plugin.getXMPP().sendMessage(address, message);
+				
+				plugin.getXMPP().sendMessage(address,  message);
 			} 
 			if(address.equalsIgnoreCase(users.substring(users.indexOf("|") + 1 , users.length()))) {
 				plugin.getXMPP().sendMessage(users.substring(0, users.indexOf("|")), message);

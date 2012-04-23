@@ -13,4 +13,11 @@ xmpp:
 users:
 - 'user@jabber.org|MinecraftLogin'
 
+op-users:
+- 'user@jabber.org'
+
+messages:
+    connect: logged in
+    disconnect: logged out
+
 debug: true
