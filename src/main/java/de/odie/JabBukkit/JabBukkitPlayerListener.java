@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 
 public class JabBukkitPlayerListener implements Listener {
-	protected JabBukkit plugin;
-	protected List<String> users;
+	private JabBukkit plugin;
+	private List<String> users;
 	
 	public JabBukkitPlayerListener(JabBukkit plugin) {
 		this.plugin = plugin;
