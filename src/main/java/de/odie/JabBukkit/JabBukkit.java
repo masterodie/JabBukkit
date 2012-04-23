@@ -34,26 +34,34 @@ public class JabBukkit extends JavaPlugin {
 	
 	public void onEnable() {		
 		Plugin jabbukkit = this.getServer().getPluginManager().getPlugin(PluginName);
-		getServer().getPluginManager().registerEvents(new JabBukkitPlayerListener(this), this);
-		boolean file = new File((getDataFolder().toString()) + File.separator + "/config.yml").exists();
-		
-		if(!file)
-			saveDefaultConfig();
-		
-		xmpp = new JabBukkitXMPP(this);
 		if (jabbukkit != null) {
 		    if (!jabbukkit.isEnabled()) {
 		        getServer().getPluginManager().enablePlugin(jabbukkit);
 		    }
 		}
+		
+		getServer().getPluginManager().registerEvents(new JabBukkitPlayerListener(this), this);
 
+		loadConfiguration();
+		
+		xmpp = new JabBukkitXMPP(this);
 		getCommand("jb").setExecutor(executor);
 		getCommand("jbadmin").setExecutor(executor);
 		
 	}
+	
+	private void loadConfiguration() {
+		boolean file = new File((getDataFolder().toString()) + File.separator + "/config.yml").exists();
+		
+		if(!file)
+			saveDefaultConfig();
+		else
+			saveConfig();
+	}
  
 	public void onDisable() {
-		xmpp.doDisconnect();
+		if(xmpp.getConnection().isConnected())
+			xmpp.doDisconnect();
 	}
 	
 	public String getPluginName() {

@@ -22,18 +22,21 @@ import org.jivesoftware.smack.util.StringUtils;
 
 public class JabBukkitXMPP extends Handler implements MessageListener, ChatManagerListener {
 
-	protected JabBukkit plugin;
-	protected XMPPConnection conn;
-	protected ChatManager chatmanager;
+	private JabBukkit plugin;
+	private XMPPConnection conn;
+	private ChatManager chatmanager;
 	private final transient Map<String, Chat> chats = Collections.synchronizedMap(new HashMap<String, Chat>());
-	protected JabBukkitXMPPInterface iface;
 	
 	public JabBukkitXMPP(JabBukkit jabbukkit) {
 		this.plugin = jabbukkit;
 		doConnect();
 	}
 
-	public void doConnect() {
+	public boolean doConnect() {
+		if(plugin.getConfig().getString("xmpp.server").equals("localhost") && plugin.getConfig().getString("xmpp.user").equals("user")) {
+			plugin.log.warning("[" + plugin.getPluginName() + "] XMPP not configured");
+			return false;
+		}
 		ConnectionConfiguration xmppConfig = new ConnectionConfiguration(plugin.getConfig().getString("xmpp.server"), plugin.getConfig().getInt("xmpp.port"));
 		xmppConfig.setSASLAuthenticationEnabled(plugin.getConfig().getBoolean("xmpp.sasl"));
 		SASLAuthentication.supportSASLMechanism("PLAIN", 0);
@@ -58,11 +61,13 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 			}
 			chatmanager = conn.getChatManager();
 			chatmanager.addChatListener(this);
-			plugin.log.info("["+plugin.getPluginName()+"] XMPP Login Successful");		
+			plugin.log.info("["+plugin.getPluginName()+"] XMPP Login Successful");	
+			return true;
 		} catch(XMPPException e) {
 			plugin.log.severe("["+plugin.getPluginName()+"] XMPP Login Failed");
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	public void doDisconnect() {
@@ -183,6 +188,10 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 	public void publish(LogRecord arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public XMPPConnection getConnection() {
+		return conn;
 	}
 	
 
