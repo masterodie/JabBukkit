@@ -57,12 +57,12 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 				}
 			}
 			chatmanager = conn.getChatManager();
-			chatmanager.addChatListener(this);	
+			chatmanager.addChatListener(this);
+			plugin.log.info("["+plugin.getPluginName()+"] XMPP Login Successful");		
 		} catch(XMPPException e) {
 			plugin.log.severe("["+plugin.getPluginName()+"] XMPP Login Failed");
 			e.printStackTrace();
 		}
-		plugin.log.info("["+plugin.getPluginName()+"] XMPP Login Successful");	
 	}
 	
 	public void doDisconnect() {

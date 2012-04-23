@@ -18,6 +18,7 @@
 
 package de.odie.JabBukkit;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.Plugin;
@@ -34,6 +35,10 @@ public class JabBukkit extends JavaPlugin {
 	public void onEnable() {		
 		Plugin jabbukkit = this.getServer().getPluginManager().getPlugin(PluginName);
 		getServer().getPluginManager().registerEvents(new JabBukkitPlayerListener(this), this);
+		boolean file = new File((getDataFolder().toString()) + File.separator + "/config.yml").exists();
+		
+		if(!file)
+			saveDefaultConfig();
 		
 		xmpp = new JabBukkitXMPP(this);
 		if (jabbukkit != null) {
