@@ -122,19 +122,14 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 		}
 	}
 
-	private void startChat(final String address) throws XMPPException
-	{
-		if (chatmanager == null)
-		{
+	private void startChat(final String address) throws XMPPException {
+		if (chatmanager == null) {
 			return;
 		}
-		synchronized (chats)
-		{
-			if (!chats.containsKey(address))
-			{
+		synchronized (chats) {
+			if (!chats.containsKey(address)) {
 				final Chat chat = chatmanager.createChat(address, this);
-				if (chat == null)
-				{
+				if (chat == null) {
 					throw new XMPPException("Could not start Chat with " + address);
 				}
 				chats.put(address, chat);
@@ -142,22 +137,16 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 		}
 	}
 
-	public boolean sendMessage(final String address, final String message)
-	{
-		if (address != null && !address.isEmpty())
-		{
-			try
-			{
+	public boolean sendMessage(final String address, final String message) {
+		if (address != null && !address.isEmpty()) {
+			try {
 				startChat(address);
 				final Chat chat;
-				synchronized (chats)
-				{
+				synchronized (chats) {
 					chat = chats.get(address);
 				}
-				if (chat != null)
-				{
-					if (!conn.isConnected())
-					{
+				if (chat != null) {
+					if (!conn.isConnected()) {
 						doDisconnect();
 						doConnect();
 					}
@@ -166,8 +155,7 @@ public class JabBukkitXMPP extends Handler implements MessageListener, ChatManag
 					return true;
 				}
 			}
-			catch (XMPPException ex)
-			{
+			catch (XMPPException ex) {
 				disableChat(address);
 			}
 		}

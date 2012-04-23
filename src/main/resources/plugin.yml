@@ -1,12 +1,15 @@
 name: JabBukkit
 main: de.odie.JabBukkit.JabBukkit
-version: 0.4b
+version: 0.5b
 description: A Simple XMPP Plugin, that sends all Chat events to a specific Jabber Account
 author: odie
 commands:
    jb:
       description: This is the basic plugin command.
-      usage: /<command>
+      usage: |
+       /<command> (reload | adduser | setstatus)
+       /<command> pm (username or JID) Message - Sends a private Message to user
+       /<command> users - Prints a userlist
    jbadmin:
       description: This is the basic plugin administration command.
       permission: jabbukkit.admin

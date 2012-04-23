@@ -1,13 +1,17 @@
 JabBukkit - chat to XMPP plugin for craftBukkit
 
 Commands:
-/jb - not working by now
+/jb - Sends private messages or shows a list of plugin users
+/jb users - Prints the userlist
+/jb pm (username or JID) Message - Sends a private message to the specified user
 /jbadmin - reload plugin and configuration, set status message or add new user
 /jbadmin reload - Reloads the Server
 /jbadmin setstatus Your Message Here - sets status message to "Your Message Here"
 /jbadmin adduser mcuser mcuser@jabber.org - adds player with name mcuser and jid mcuser@jabber.org to config file 
 
 Permissions:
+jabbukkit.user - Access /jb command
+jabbukkit.userlist - Access /jb users command
 jabbukkit.admin - Access /jbadmin command
 
 Configuration:
