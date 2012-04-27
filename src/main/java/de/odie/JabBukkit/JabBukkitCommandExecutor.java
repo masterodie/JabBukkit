@@ -34,17 +34,15 @@ public class JabBukkitCommandExecutor implements CommandExecutor {
 				}
 			}
 			if(args.length != 0) {
-				switch(args[0]) {
-				case "pm":
+				if(args[0].equalsIgnoreCase("pm")) {
 					execSendPrivateMessage(sender, args);
 					return true;
-				case "users":
+				} else if(args[0].equalsIgnoreCase("users")) {
 					if(player.hasPermission("jabbukkit.userlist"))
 						execPrintUsers(sender);
 					return true;
-				default:
-					return false;
 				}
+				return false;
 			}
 			return false;
 		}
@@ -55,22 +53,20 @@ public class JabBukkitCommandExecutor implements CommandExecutor {
 				}
 			}
 			if(args.length != 0) {
-				switch(args[0]) {
-				case "adduser":
+				if(args[0].equals("adduser")) {
 					execAddUser(args);
 					return true;
-				case "reconnect":
+				} else if(args[0].equalsIgnoreCase("reconnect")) {
 					execReconnect();
 					return true;
-				case "reload":
+				} else if(args[0].equalsIgnoreCase("reload")) {
 					execReload();
 					return true;
-				case "setstatus":
+				} else if(args[0].equalsIgnoreCase("setstatus")) {
 					execUpdateStatus(args);
 					return true;
-				default:
-					return false;
 				}
+				return false;
 			}
 			return false;
 		}//If this has happened the function will break and return true. if this hasn't happened the a value of false will be returned.
